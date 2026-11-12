@@ -4,6 +4,9 @@ An entry for the [UGREEN Hackathon 2026 on AI NAS](https://ugreenhackathon.devpo
 
 Household Wiki is a UGOS Skill. It turns a family's documents, photos, and voice memos on the NAS into a private, linked Markdown wiki. The wiki answers household questions with sources and shows the dates that are coming up. Source files stay read-only. The Skill writes only after the user confirms a change set.
 
+
+**New session?** Read [HANDOFF.md](HANDOFF.md) first: status, dates, open tasks, and how to run the static check.
+
 ## Contents
 
 | Path | What it is |
