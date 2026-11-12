@@ -1,0 +1,47 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; }
+    #s9-ring { right: -480px; top: -420px; }
+    #s9-q { left: 96px; top: 190px; font-size: 48px; }
+    #s9-day { position: absolute; left: 760px; top: 222px; font: 500 28px var(--font-mono); color: var(--muted); }
+    .s9-col { position: absolute; top: 346px; font: 700 28px var(--font-mono); letter-spacing: 0.14em; }
+    .s9-row { position: absolute; height: 74px; border-radius: 8px; display: flex; align-items: center; gap: 28px; padding: 0 26px; font: 500 32px var(--font-body); }
+    .s9-row b { font: 500 30px var(--font-mono); white-space: nowrap; }
+    .s9-up { left: 96px; width: 1000px; background: var(--paper); color: var(--ink); }
+    .s9-due { left: 1150px; width: 674px; background: #40201d; color: #ffe1dd; border: 2px solid var(--red); height: 112px; }
+    .s9-due b { color: var(--red); }
+    .s9-due span { font-size: 29px; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="s9" data-width="1920" data-height="1080">
+    <div id="s9-stage" class="hw-stage">
+      <div id="s9-ring" class="hw-ring" data-layout-ignore></div>
+      <div class="hw-kicker">Tidy</div>
+      <div id="s9-q" class="hw-bubble user">What needs attention?</div>
+      <div id="s9-day">Expected check for 2026-11-25</div>
+      <div id="s9-c1" class="s9-col" style="left: 96px; color: var(--mint)">COMING UP</div>
+      <div class="s9-row s9-up" style="top: 400px"><b>2026-11-30</b><span>Field trip form due</span></div>
+      <div class="s9-row s9-up" style="top: 486px"><b>2026-12-03</b><span>Picture day</span></div>
+      <div class="s9-row s9-up" style="top: 572px"><b>2026-12-15</b><span>Car insurance renews</span></div>
+      <div class="s9-row s9-up" style="top: 658px"><b>2026-12-17</b><span>Winter concert</span></div>
+      <div class="s9-row s9-up" style="top: 744px"><b>2026-12-20</b><span>Pepper's rabies vaccine due</span></div>
+      <div class="s9-row s9-up" style="top: 830px"><b>2026-12-21</b><span>Winter break starts</span></div>
+      <div id="s9-c2" class="s9-col" style="left: 1150px; color: var(--red)">PAST DUE</div>
+      <div class="s9-row s9-due" style="top: 400px"><b>2026-11-18</b><span>Internet bill, $65.00</span></div>
+      <div class="s9-row s9-due" style="top: 528px"><b>2026-03-02</b><span>Dishwasher warranty ended</span></div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      HW.spin(tl, "#s9-ring", 7, 30);
+      HW.inn(tl, "#s9-q", 0.7, { s: 0.85, d: 0.4, ease: "back.out(1.4)" });
+      HW.inn(tl, "#s9-day", 1.4, { d: 0.3 });
+      HW.inn(tl, "#s9-c1", 2.3, { d: 0.25 });
+      tl.fromTo(".s9-up", { opacity: 0, x: -120, filter: "blur(10px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.45, ease: "expo.out", stagger: 0.13 }, 2.45);
+      HW.inn(tl, "#s9-c2", 4.4, { d: 0.25 });
+      tl.fromTo(".s9-due", { opacity: 0, x: 140, filter: "blur(10px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.45, ease: "expo.out", stagger: 0.25 }, 4.5);
+      HW.out(tl, "#s9-stage", 6.7, 0.28);
+      window.__timelines["s9"] = tl;
+    })();
+  </script>
+</template>

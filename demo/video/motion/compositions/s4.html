@@ -1,0 +1,67 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; }
+    #s4-ring { left: 400px; top: -700px; }
+    #s4-say { left: 1466px; top: 164px; }
+    #s4-h { top: 196px; font-size: 68px; }
+    #s4-h b { color: var(--mint); font-weight: 700; }
+    .s4-file { left: 96px; }
+    .s4-line { position: absolute; height: 5px; background: var(--line); border-radius: 3px; }
+    .s4-exp { position: absolute; left: 800px; width: 400px; height: 124px; border: 3px solid var(--mint); border-radius: 12px; background: var(--ground-2); padding: 20px 26px; }
+    .s4-exp b { display: block; font: 700 32px var(--font-mono); color: var(--mint); }
+    .s4-exp span { display: block; font: 500 28px var(--font-body); color: var(--muted); margin-top: 4px; }
+    .s4-fact { left: 1300px; }
+    #s4-more { position: absolute; left: 96px; top: 936px; font: 500 28px var(--font-mono); color: var(--muted); }
+  </style>
+  <div id="root" data-composition-id="s4" data-width="1920" data-height="1080">
+    <div id="s4-stage" class="hw-stage">
+      <div id="s4-ring" class="hw-ring" data-layout-ignore></div>
+      <div class="hw-kicker">Ingest</div>
+      <div id="s4-say" class="hw-bubble user">Update the wiki.</div>
+      <h2 id="s4-h" class="hw-h">The Skill finds <b>12 new files.</b></h2>
+
+      <div id="s4-f1" class="hw-file s4-file" style="top: 372px"><b>car-insurance-renewal-2026.pdf</b><span>Documents/Home</span></div>
+      <div id="s4-l1a" class="s4-line" style="left: 668px; top: 418px; width: 122px"></div>
+      <div id="s4-e1" class="s4-exp" style="top: 358px"><b>document-agent</b><span>reads the documents</span></div>
+      <div id="s4-l1b" class="s4-line" style="left: 1210px; top: 418px; width: 80px"></div>
+      <div id="s4-k1" class="hw-chip s4-fact s4-k" style="top: 352px">renews 2026-12-15</div>
+      <div id="s4-k2" class="hw-chip s4-fact s4-k" style="top: 424px">$1,284.00 per year</div>
+
+      <div id="s4-f2" class="hw-file s4-file photo" style="top: 572px"><b>furnace-label.jpg</b><span>Photos/Home</span></div>
+      <div id="s4-l2a" class="s4-line" style="left: 668px; top: 618px; width: 122px"></div>
+      <div id="s4-e2" class="s4-exp" style="top: 558px"><b>photo-agent</b><span>reads text in photos</span></div>
+      <div id="s4-l2b" class="s4-line" style="left: 1210px; top: 618px; width: 80px"></div>
+      <div id="s4-k3" class="hw-chip s4-fact s4-k" style="top: 588px">filter 16 x 25 x 1</div>
+
+      <div id="s4-f3" class="hw-file s4-file audio" style="top: 772px"><b>plumber-visit-2026-11-02.m4a</b><span>Voice Memos</span></div>
+      <div id="s4-l3a" class="s4-line" style="left: 668px; top: 818px; width: 122px"></div>
+      <div id="s4-e3" class="s4-exp" style="top: 758px"><b>knowledge-agent</b><span>transcribes voice memos</span></div>
+      <div id="s4-l3b" class="s4-line" style="left: 1210px; top: 818px; width: 80px"></div>
+      <div id="s4-k4" class="hw-chip s4-fact s4-k" style="top: 788px">plumber Ray, 555-0199</div>
+
+      <div id="s4-more">3 of the 12 sample files shown</div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      HW.spin(tl, "#s4-ring", 13.7, 50);
+      HW.inn(tl, "#s4-say", 0.9, { s: 0.8, d: 0.45, ease: "back.out(1.5)" });
+      HW.inn(tl, "#s4-h", 3.3, { x: -50, d: 0.5 });
+      tl.fromTo(".s4-file", { opacity: 0, x: -160, filter: "blur(10px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.55, ease: "expo.out", stagger: 0.16 }, 3.6);
+      HW.inn(tl, "#s4-more", 4.4, { d: 0.3 });
+      const lane = function (n, t, facts, tf) {
+        tl.fromTo("#s4-e" + n, { opacity: 0, scale: 0.85, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.45, ease: "back.out(1.5)" }, t);
+        tl.fromTo("#s4-l" + n + "a", { scaleX: 0, transformOrigin: "0% 50%", backgroundColor: "#2c3a35" }, { scaleX: 1, backgroundColor: "#58c2a8", duration: 0.4, ease: "power2.inOut" }, t + 0.15);
+        tl.fromTo("#s4-l" + n + "b", { scaleX: 0, transformOrigin: "0% 50%", backgroundColor: "#2c3a35" }, { scaleX: 1, backgroundColor: "#58c2a8", duration: 0.35, ease: "power2.inOut" }, tf - 0.3);
+        tl.fromTo(facts, { opacity: 0, x: -70, filter: "blur(8px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.45, ease: "expo.out", stagger: 0.2 }, tf);
+      };
+      lane(1, 6.1, "#s4-k1, #s4-k2", 7.1);
+      lane(2, 8.95, "#s4-k3", 9.8);
+      lane(3, 10.2, "#s4-k4", 11.0);
+      tl.fromTo(".s4-k", { borderColor: "#2c3a35", color: "#f3f6f4" }, { borderColor: "#58c2a8", color: "#58c2a8", duration: 0.35, ease: "power2.inOut", stagger: 0.1, immediateRender: false }, 11.7);
+      HW.out(tl, "#s4-stage", 13.4, 0.28);
+      window.__timelines["s4"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,39 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; }
+    #s1-ring { right: -420px; top: -10px; }
+    #s1-title { top: 330px; font-size: 160px; letter-spacing: -0.035em; }
+    #s1-title .w:last-child { color: var(--mint); }
+    #s1-sub { position: absolute; left: 100px; top: 580px; font: 500 62px/1.2 var(--font-body); color: var(--paper); }
+    #s1-sub2 { position: absolute; left: 100px; top: 664px; font: 500 62px/1.2 var(--font-body); color: var(--muted); }
+    #s1-note { position: absolute; left: 100px; top: 820px; font: 500 30px var(--font-mono); color: var(--amber); }
+    .s1-f { left: 1250px; }
+  </style>
+  <div id="root" data-composition-id="s1" data-width="1920" data-height="1080">
+    <div id="s1-stage" class="hw-stage">
+      <div id="s1-ring" class="hw-ring" data-layout-ignore></div>
+      <div id="s1-f1" class="hw-file s1-f" style="top: 250px"><b>dishwasher-receipt.pdf</b><span>Documents/Home</span></div>
+      <div id="s1-f2" class="hw-file s1-f photo" style="top: 400px"><b>furnace-label.jpg</b><span>Photos/Home</span></div>
+      <div id="s1-f3" class="hw-file s1-f" style="top: 550px"><b>school-letter-maple-grove.pdf</b><span>Documents/Home</span></div>
+      <div id="s1-f4" class="hw-file s1-f audio" style="top: 700px"><b>plumber-visit-2026-11-02.m4a</b><span>Voice Memos</span></div>
+      <h1 id="s1-title" class="hw-h"><span class="w">Household </span><span class="w">Wiki</span></h1>
+      <div id="s1-sub">A private wiki for your home,</div>
+      <div id="s1-sub2">on your NAS.</div>
+      <div id="s1-note">Sample household: the Riveras. Everything shown is fictional.</div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      HW.spin(tl, "#s1-ring", 9.6);
+      tl.fromTo("#s1-title .w", { opacity: 0, y: 60, filter: "blur(14px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.6, ease: "expo.out", stagger: 0.18 }, 0.7);
+      tl.fromTo(".s1-f", { opacity: 0, x: 420, rotation: 6, filter: "blur(12px)" }, { opacity: 1, x: 0, rotation: -3, filter: "blur(0px)", duration: 0.7, ease: "expo.out", stagger: 0.12 }, 1.2);
+      HW.inn(tl, "#s1-sub", 2.3, { blur: 8, d: 0.3 });
+      HW.inn(tl, "#s1-sub2", 4.4, { blur: 8, d: 0.3 });
+      tl.fromTo(".s1-f", { y: 0 }, { y: -40, duration: 5, ease: "none", stagger: 0.1 }, 2.4);
+      HW.inn(tl, "#s1-note", 6.4, { x: -30, d: 0.5 });
+      HW.out(tl, "#s1-stage", 9.3, 0.28);
+      window.__timelines["s1"] = tl;
+    })();
+  </script>
+</template>

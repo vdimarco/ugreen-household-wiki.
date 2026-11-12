@@ -39,6 +39,26 @@ python3 demo/video/build_concept_video.py demo/video/narration demo/video/househ
 
 Needs Python with Pillow, `ffmpeg`, and `pdftoppm`.
 
+## Motion-graphics version (`household-wiki-motion.mp4`)
+
+`household-wiki-motion.mp4`: 1920 x 1080, 30 fps, 103 seconds. It uses the same 10 narration files and the same facts as the concept preview, with animated scenes built in HyperFrames (HTML and GSAP rendered to video). It has no music.
+
+**It is also a concept preview, not a recording of the Skill on a UGREEN AI NAS.** A label at the top of every frame says: "Concept preview. Fictional sample data. Expected results shown. Not a recording on a UGREEN AI NAS."
+
+The project is in `motion/`: `index.html` holds the scene order, the label, and the narration; `compositions/s1.html` to `s10.html` hold one scene each.
+
+```bash
+cd demo/video/motion && npx hyperframes check
+```
+
+```bash
+cd demo/video/motion && npx hyperframes render -o ../household-wiki-motion.mp4
+```
+
+Needs Node.js and `ffmpeg`. The first run downloads the HyperFrames CLI.
+
+A clickable walkthrough with the same content is in `../interactive/index.html`. Open the file in a browser.
+
 ## Final Round 2 video (to record on the test day)
 
 The rules require a public YouTube video of no more than 3 minutes, with English narration or English subtitles, that shows the Skill running on **your assigned UGREEN AI NAS** during your assigned testing day.

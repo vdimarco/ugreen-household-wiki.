@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --ground: #0e1a17;
+        --ground-2: #142521;
+        --paper: #f3f6f4;
+        --ink: #16211d;
+        --mint: #58c2a8;
+        --amber: #f0b860;
+        --red: #f08c84;
+        --muted: #9db0a8;
+        --line: #2c3a35;
+        --font-display: "Outfit", sans-serif;
+        --font-body: "Inter", sans-serif;
+        --font-mono: "IBM Plex Mono", monospace;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--ground); }
+      [data-composition-id="main"] { position: relative; width: 1920px; height: 1080px; font-family: var(--font-body); color: var(--paper); }
+      #hw-bg { position: absolute; inset: 0; background: radial-gradient(1200px 800px at 78% 20%, #1b352e 0%, var(--ground) 70%); }
+      #hw-bg::after { content: ""; position: absolute; inset: 0; background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 96px 96px; opacity: 0.28; }
+      #label { z-index: 50; pointer-events: none; }
+      #hw-label-pill { position: absolute; left: 96px; top: 44px; display: flex; gap: 18px; align-items: center; background: var(--amber); color: #1d1503; font: 700 28px var(--font-body); padding: 10px 22px; border-radius: 6px; letter-spacing: 0.01em; }
+      #hw-label-pill b { font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em; }
+      #hw-label-pill i { font-style: normal; width: 6px; height: 6px; border-radius: 50%; background: #1d1503; opacity: 0.55; }
+      /* shared scene pieces */
+      .hw-stage { position: absolute; inset: 0; }
+      .hw-ring { position: absolute; width: 1100px; height: 1100px; border-radius: 50%; border: 2px dashed var(--line); opacity: 0.9; }
+      .hw-kicker { position: absolute; left: 96px; top: 128px; font: 700 28px var(--font-mono); color: var(--mint); letter-spacing: 0.14em; text-transform: uppercase; }
+      .hw-h { position: absolute; left: 96px; font: 700 84px/1.05 var(--font-display); letter-spacing: -0.02em; color: var(--paper); }
+      .hw-h .w, .hw-big .w { display: inline-block; white-space: pre; }
+      .hw-mono { font-family: var(--font-mono); }
+      .hw-card { position: absolute; background: var(--paper); color: var(--ink); border-radius: 10px; box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35); }
+      .hw-file { position: absolute; width: 560px; background: var(--paper); color: var(--ink); border-radius: 8px; border-left: 10px solid var(--mint); padding: 14px 16px; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35); }
+      .hw-file b { display: block; font: 500 27px var(--font-mono); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .hw-file span { display: block; font: 400 24px var(--font-body); color: #55655f; margin-top: 3px; }
+      .hw-file.photo { border-left-color: var(--amber); }
+      .hw-file.audio { border-left-color: var(--red); }
+      .hw-chip { position: absolute; font: 500 28px var(--font-mono); background: var(--ground-2); border: 2px solid var(--line); color: var(--paper); padding: 10px 18px; border-radius: 6px; white-space: nowrap; }
+      .hw-bubble { position: absolute; font: 500 40px/1.25 var(--font-body); padding: 22px 30px; border-radius: 22px; }
+      .hw-bubble.user { background: var(--mint); color: #06231c; border-bottom-right-radius: 4px; }
+      .hw-bubble.skill { background: var(--ground-2); border: 2px solid var(--line); color: var(--paper); border-bottom-left-radius: 4px; }
+    </style>
+    <script>
+      // Small helpers so every scene builds its paused timeline the same way.
+      window.HW = {
+        inn: function (tl, sel, t, o) {
+          o = o || {};
+          tl.fromTo(sel, { opacity: 0, x: o.x || 0, y: o.y || 0, scale: o.s == null ? 1 : o.s, filter: "blur(" + (o.blur == null ? 10 : o.blur) + "px)" },
+            { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)", duration: o.d || 0.5, ease: o.ease || "expo.out", stagger: o.gap || 0 }, t);
+        },
+        words: function (tl, sel, t, gap) {
+          tl.fromTo(sel + " .w", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power4.out", stagger: gap || 0.07 }, t);
+        },
+        out: function (tl, sel, t, d) {
+          tl.fromTo(sel, { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(10px)", duration: d || 0.22, ease: "power2.in", immediateRender: false }, t);
+        },
+        spin: function (tl, sel, dur, deg) {
+          tl.fromTo(sel, { rotation: 0 }, { rotation: deg || dur * 4, duration: dur, ease: "none" }, 0);
+        }
+      };
+    </script>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="103.2" data-width="1920" data-height="1080">
+      <div id="hw-bg"></div>
+
+      <div id="s1" data-composition-id="s1" data-composition-src="compositions/s1.html" data-start="0" data-duration="9.6" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="s2" data-composition-id="s2" data-composition-src="compositions/s2.html" data-start="9.6" data-duration="12.6" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="s3" data-composition-id="s3" data-composition-src="compositions/s3.html" data-start="22.2" data-duration="10.7" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="s4" data-composition-id="s4" data-composition-src="compositions/s4.html" data-start="32.9" data-duration="13.7" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="s5" data-composition-id="s5" data-composition-src="compositions/s5.html" data-start="46.6" data-duration="9.1" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="s6" data-composition-id="s6" data-composition-src="compositions/s6.html" data-start="55.7" data-duration="8.7" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="s7" data-composition-id="s7" data-composition-src="compositions/s7.html" data-start="64.4" data-duration="11.6" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="s8" data-composition-id="s8" data-composition-src="compositions/s8.html" data-start="76" data-duration="9.7" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="s9" data-composition-id="s9" data-composition-src="compositions/s9.html" data-start="85.7" data-duration="7" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="s10" data-composition-id="s10" data-composition-src="compositions/s10.html" data-start="92.7" data-duration="10.5" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+
+      <!-- Persistent honesty label: on screen for the whole film. -->
+      <div id="label" data-composition-id="label" data-composition-src="compositions/label.html" data-no-timeline data-start="0" data-duration="103.2" data-track-index="3" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+
+      <audio id="vo1" class="clip" src="assets/audio/scene1.m4a" data-start="0.4" data-duration="8.73" data-track-index="5" data-volume="1"></audio>
+      <audio id="vo2" class="clip" src="assets/audio/scene2.m4a" data-start="10" data-duration="11.74" data-track-index="5" data-volume="1"></audio>
+      <audio id="vo3" class="clip" src="assets/audio/scene3.m4a" data-start="22.6" data-duration="9.82" data-track-index="5" data-volume="1"></audio>
+      <audio id="vo4" class="clip" src="assets/audio/scene4.m4a" data-start="33.3" data-duration="12.84" data-track-index="5" data-volume="1"></audio>
+      <audio id="vo5" class="clip" src="assets/audio/scene5.m4a" data-start="47" data-duration="8.18" data-track-index="5" data-volume="1"></audio>
+      <audio id="vo6" class="clip" src="assets/audio/scene6.m4a" data-start="56.1" data-duration="8.2" data-track-index="5" data-volume="1"></audio>
+      <audio id="vo7" class="clip" src="assets/audio/scene7.m4a" data-start="64.8" data-duration="10.68" data-track-index="5" data-volume="1"></audio>
+      <audio id="vo8" class="clip" src="assets/audio/scene8.m4a" data-start="76.4" data-duration="8.76" data-track-index="5" data-volume="1"></audio>
+      <audio id="vo9" class="clip" src="assets/audio/scene9.m4a" data-start="86.1" data-duration="5.98" data-track-index="5" data-volume="1"></audio>
+      <audio id="vo10" class="clip" src="assets/audio/scene10.m4a" data-start="93.1" data-duration="8.33" data-track-index="5" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

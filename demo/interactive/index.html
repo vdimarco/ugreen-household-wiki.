@@ -1,0 +1,329 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Household Wiki Walkthrough</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Layout: a filing-cabinet walkthrough. One sticky honesty strip, a row of seven tabs
+   (the real order of a run), and one working panel at a time on a single reading column. */
+:root {
+  --bg: #f3f6f4;
+  --surface: #ffffff;
+  --sunken: #e8eeeb;
+  --ink: #16211d;
+  --muted: #55655f;
+  --line: #cfd9d4;
+  --accent: #17695a;
+  --accent-ink: #ffffff;
+  --accent-soft: #d9ece6;
+  --warn: #8a5300;
+  --warn-soft: #f7e7c8;
+  --crit: #a3302a;
+  --crit-soft: #f6dcd9;
+  --strip-bg: #16211d;
+  --strip-ink: #f3f6f4;
+  --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101816; --surface: #18221f; --sunken: #0b1210; --ink: #e6efeb; --muted: #9db0a8;
+    --line: #2c3a35; --accent: #58c2a8; --accent-ink: #06231c; --accent-soft: #173a32;
+    --warn: #f0b860; --warn-soft: #3b2c10; --crit: #f08c84; --crit-soft: #40201d;
+    --strip-bg: #e6efeb; --strip-ink: #101816; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #101816; --surface: #18221f; --sunken: #0b1210; --ink: #e6efeb; --muted: #9db0a8;
+  --line: #2c3a35; --accent: #58c2a8; --accent-ink: #06231c; --accent-soft: #173a32;
+  --warn: #f0b860; --warn-soft: #3b2c10; --crit: #f08c84; --crit-soft: #40201d;
+  --strip-bg: #e6efeb; --strip-ink: #101816; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.55; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--strip-bg); }
+.wrap { max-width: 880px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.strip { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: var(--strip-bg); color: var(--strip-ink); font-size: 13px; line-height: 1.4; }
+.strip .wrap { padding-block: 8px; }
+.strip b { font-weight: 600; }
+header .wrap { padding-block: 28px 8px; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(28px, 5vw, 40px); line-height: 1.1; margin: 0 0 8px; text-wrap: balance; }
+.lede { color: var(--muted); max-width: 62ch; margin: 0; }
+.family { font-size: 14px; color: var(--muted); margin: 12px 0 0; }
+nav.tabs .wrap { padding-block: 16px 0; }
+.tablist { display: flex; flex-wrap: wrap; gap: 6px; padding: 0; margin: 0; list-style: none; }
+.tab { font: 500 14px var(--font-body); color: var(--muted); background: transparent; border: 1px solid var(--line); border-radius: 4px 4px 0 0; border-bottom-width: 3px; padding: 7px 11px; cursor: pointer; display: flex; gap: 7px; align-items: baseline; }
+.tab .n { font-family: var(--font-mono); font-size: 12px; }
+.tab[aria-selected="true"] { color: var(--ink); background: var(--surface); border-bottom-color: var(--accent); }
+.tab:hover { color: var(--ink); }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+main .wrap { padding-block: 20px 56px; display: flex; flex-direction: column; gap: 20px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: clamp(16px, 3.5vw, 28px); display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+h2 { font-family: var(--font-display); font-weight: 700; font-size: 24px; line-height: 1.2; margin: 0; text-wrap: balance; }
+h3 { font: 600 13px var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0; }
+p { margin: 0; max-width: 66ch; }
+.note { font-size: 14px; color: var(--muted); }
+.say { display: flex; flex-direction: column; gap: 10px; }
+.bubble { max-width: 60ch; padding: 10px 14px; border-radius: 12px; }
+.bubble.user { align-self: flex-end; background: var(--accent); color: var(--accent-ink); border-bottom-right-radius: 2px; }
+.bubble.skill { align-self: flex-start; background: var(--sunken); border-bottom-left-radius: 2px; }
+.bubble .who { display: block; font: 600 11px var(--font-body); letter-spacing: .06em; text-transform: uppercase; opacity: .75; margin-bottom: 2px; }
+.btn { font: 600 15px var(--font-body); background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 4px; padding: 10px 16px; cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.btn[disabled] { opacity: .45; cursor: default; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.mono, code { font-family: var(--font-mono); font-size: 13.5px; overflow-wrap: anywhere; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0; margin: 0; list-style: none; }
+.chip { font-family: var(--font-mono); font-size: 13px; background: var(--sunken); border-radius: 3px; padding: 3px 8px; }
+.files { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; }
+.file { text-align: left; font: inherit; color: inherit; background: var(--bg); border: 1px solid var(--line); border-left: 4px solid var(--line); border-radius: 3px; padding: 9px 11px; cursor: pointer; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.file .name { font-family: var(--font-mono); font-size: 13px; overflow-wrap: anywhere; }
+.file .meta { font-size: 12.5px; color: var(--muted); }
+.file[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.file.doc { border-left-color: var(--accent); }
+.file.photo { border-left-color: var(--warn); }
+.file.audio { border-left-color: var(--crit); }
+.detail { background: var(--sunken); border-radius: 4px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+.detail dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; font-size: 14.5px; }
+.detail dt { color: var(--muted); }
+.detail dd { margin: 0; min-width: 0; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font: 600 12px var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+td.path { font-family: var(--font-mono); font-size: 13px; white-space: nowrap; }
+.pill { display: inline-block; font: 600 12px var(--font-body); border-radius: 99px; padding: 2px 9px; white-space: nowrap; }
+.pill.new { background: var(--accent-soft); color: var(--accent); }
+.pill.chg { background: var(--warn-soft); color: var(--warn); }
+.pill.conf { background: var(--crit-soft); color: var(--crit); }
+.pill.ok { background: var(--sunken); color: var(--muted); }
+.md { background: var(--sunken); border-radius: 4px; padding: 16px 18px; font-family: var(--font-mono); font-size: 13.5px; line-height: 1.6; overflow-x: auto; }
+.md .h1 { font-weight: 500; font-size: 17px; }
+.md .h2 { font-weight: 500; margin-top: 12px; color: var(--accent); }
+.md .src { color: var(--muted); }
+.md .hl { background: var(--warn-soft); color: var(--warn); border-radius: 2px; padding: 0 3px; }
+.md .gone { background: var(--crit-soft); color: var(--crit); border-radius: 2px; padding: 0 3px; }
+.md div { overflow-wrap: anywhere; padding-left: 1.2em; text-indent: -1.2em; }
+.qs { display: flex; flex-direction: column; gap: 6px; }
+.q { text-align: left; font: 500 15px var(--font-body); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 9px 12px; cursor: pointer; display: flex; gap: 10px; }
+.q .n { font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); padding-top: 2px; }
+.q[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.answer { border-left: 4px solid var(--accent); padding: 4px 0 4px 14px; display: flex; flex-direction: column; gap: 8px; }
+.answer.none { border-left-color: var(--warn); }
+.answer .big { font: 500 19px/1.35 var(--font-display); }
+.dates { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
+.dates li { display: grid; grid-template-columns: 7.2em 1fr; gap: 12px; padding: 6px 10px; border-radius: 3px; background: var(--bg); }
+.dates .d { font-family: var(--font-mono); font-size: 13.5px; font-variant-numeric: tabular-nums; }
+.dates.due li { background: var(--crit-soft); }
+.dates.conf li { background: var(--warn-soft); grid-template-columns: 1fr; }
+.pager { display: flex; justify-content: space-between; gap: 10px; }
+footer .wrap { padding-block: 0 40px; font-size: 13px; color: var(--muted); }
+@media (max-width: 520px) { .tab .label { display: none; } .tab[aria-selected="true"] .label { display: inline; } .detail dl { grid-template-columns: 1fr; } .detail dt { margin-top: 4px; } }
+@media (prefers-reduced-motion: no-preference) { .panel { animation: rise .25s ease-out; } @keyframes rise { from { transform: translateY(6px); opacity: .6; } to { transform: none; opacity: 1; } } }
+</style>
+
+<div class="strip" role="note"><div class="wrap"><b>Concept preview.</b> Fictional sample data. This page shows the <b>expected results</b> from the test plan. It is not a recording of the Skill running on a UGREEN AI NAS.</div></div>
+
+<header><div class="wrap">
+  <h1>Household Wiki walkthrough</h1>
+  <p class="lede">Click through one run of the Skill: it reads a family's files on the NAS, builds a private wiki of linked Markdown pages, and answers questions with a source for every fact.</p>
+  <p class="family">The sample household: Daniel and Ana Rivera, their daughter Mia (Grade 3), and their dog Pepper, at 42 Willow Lane, Lakeview. All of it is fictional.</p>
+</div></header>
+
+<nav class="tabs" aria-label="Steps of the run"><div class="wrap"><ol class="tablist" id="tablist" role="tablist"></ol></div></nav>
+
+<main><div class="wrap">
+  <section class="panel" id="panel" role="tabpanel" aria-live="polite"></section>
+  <div class="pager"><button class="btn ghost" id="back" type="button">Back</button><button class="btn" id="next" type="button">Next</button></div>
+</div></main>
+
+<footer><div class="wrap">Household Wiki is an entry for the UGREEN Hackathon 2026 on AI NAS. Every fact, page, answer, and date on this page comes from the project's test plan and demo data. Expected results are shown for a test day of 2026-11-25.</div></footer>
+
+<script>
+(function () {
+  var STEPS = [
+    { id: "setup", label: "Setup" }, { id: "ingest", label: "Ingest" }, { id: "change-set", label: "Change set" },
+    { id: "wiki-page", label: "Wiki page" }, { id: "ask", label: "Ask" }, { id: "conflict", label: "Conflict" }, { id: "tidy", label: "Tidy" }
+  ];
+  var FILES = [
+    { p: "Documents/Home/dishwasher-receipt.pdf", k: "doc", t: "PDF, 2 pages", e: "document-agent", f: "Aster DW-450, serial ends 4417, bought 2024-03-02, $849.00, warranty ends 2026-03-02 (page 2), service 555-0111" },
+    { p: "Documents/Home/car-insurance-renewal-2026.pdf", k: "doc", t: "PDF", e: "document-agent", f: "Harbor Lane Insurance, policy ends 2291, renews 2026-12-15, $1,284.00 per year, claims 555-0130" },
+    { p: "Documents/Home/school-letter-maple-grove.pdf", k: "doc", t: "PDF", e: "document-agent", f: "Mia, Ms. Okafor, picture day 2026-12-03, concert 2026-12-17, winter break 2026-12-21 to 2027-01-04, form due 2026-11-30, office 555-0142" },
+    { p: "Documents/Home/pediatric-visit-mia-2026-10.pdf", k: "doc", t: "PDF", e: "document-agent", f: "Dr. Lena Moreno, penicillin allergy, flu vaccine 2026-10-12, next check 2027-04-12, clinic 555-0150" },
+    { p: "Documents/Home/vet-record-pepper.pdf", k: "doc", t: "PDF", e: "document-agent", f: "Dr. Sam Patel, rabies due 2026-12-20, microchip ends 8830, clinic 555-0160" },
+    { p: "Documents/Home/internet-bill-2026-10.pdf", k: "doc", t: "PDF", e: "document-agent", f: "Bluefin Fiber, account ends 7310, $65.00 due 2026-11-18, autopay off" },
+    { p: "Photos/Home/furnace-label.jpg", k: "photo", t: "Photo", e: "photo-agent", f: "Northair HX80-3A, serial ends 5521, filter 16 x 25 x 1, installed 2019-09-14, Lakeview Heating 555-0180" },
+    { p: "Photos/Home/water-heater-label.png", k: "photo", t: "Photo", e: "photo-agent", f: "Flowmark WH50-G2, 50 gal, installed 2015-05-20, flush once a year" },
+    { p: "Photos/Home/fridge-whiteboard.jpg", k: "photo", t: "Photo", e: "photo-agent", f: "Trash Tuesday night, plumber Ray 555-0199, piano Thursday 4 pm with Ms. Chen. It also shows a Wi-Fi password, which the Skill must not copy." },
+    { p: "Photos/Home/medicine-label-mia.jpg", k: "photo", t: "Photo", e: "photo-agent", f: "Cetirizine 5 mg/5 mL, 5 mL once daily, refills 2, discard after 2027-08-31, Lakeview Pharmacy 555-0190" },
+    { p: "Photos/Home/beach-day-2026-07.jpg", k: "photo", t: "Photo", e: "photo-agent", f: "A family photo with no household facts. The Skill lists it as a file with no facts and does not describe it." },
+    { p: "Voice Memos/plumber-visit-2026-11-02.m4a", k: "audio", t: "Audio, 29 s", e: "knowledge-agent", f: "Ray, Lakeview Plumbing, 555-0199, visit cost $145, water heater is 11 years old, replace within 2 years" }
+  ];
+  var CHANGES = [
+    ["school/maple-grove-elementary.md", "school-letter-maple-grove.pdf"],
+    ["money/car-insurance.md", "car-insurance-renewal-2026.pdf"],
+    ["pets/pepper.md", "vet-record-pepper.pdf"],
+    ["people/mia.md", "school-letter-maple-grove.pdf, pediatric-visit-mia-2026-10.pdf"],
+    ["health/mia.md", "pediatric-visit-mia-2026-10.pdf, medicine-label-mia.jpg"],
+    ["appliances/dishwasher.md", "dishwasher-receipt.pdf"],
+    ["home/furnace.md", "furnace-label.jpg, fridge-whiteboard.jpg"],
+    ["home/water-heater.md", "water-heater-label.png, plumber-visit-2026-11-02.m4a"],
+    ["vehicles/tessera-wagon.md", "car-insurance-renewal-2026.pdf"],
+    ["money/internet.md", "internet-bill-2026-10.pdf"]
+  ];
+  var NEXT_RUN = ["contacts/lakeview-plumbing.md", "contacts/cedar-pediatrics.md", "contacts/oakview-vet.md"];
+  var QUESTIONS = [
+    { q: "When does the dishwasher warranty end?", a: "2026-03-02. It has ended.", page: "appliances/dishwasher.md", src: "dishwasher-receipt.pdf, page 2" },
+    { q: "What filter size does the furnace use?", a: "16 x 25 x 1", page: "home/furnace.md", src: "furnace-label.jpg, also fridge-whiteboard.jpg" },
+    { q: "When does the car insurance renew, and what does it cost?", a: "2026-12-15, $1,284.00 per year", page: "money/car-insurance.md", src: "car-insurance-renewal-2026.pdf" },
+    { q: "What is our car insurance policy number?", a: "It ends in 2291. The full number is not shown.", page: "money/car-insurance.md", src: "car-insurance-renewal-2026.pdf", note: "Account, policy, and microchip numbers keep only the last 4 characters." },
+    { q: "When is Pepper's rabies vaccine due?", a: "2026-12-20", page: "pets/pepper.md", src: "vet-record-pepper.pdf" },
+    { q: "Is Mia allergic to anything?", a: "Penicillin (rash, 2022).", page: "health/mia.md", src: "pediatric-visit-mia-2026-10.pdf", note: "The Skill reports what the document states. It gives no medical advice." },
+    { q: "What is the plumber's phone number?", a: "Ray, Lakeview Plumbing, 555-0199", page: "contacts/lakeview-plumbing.md", src: "fridge-whiteboard.jpg, plumber-visit-2026-11-02.m4a" },
+    { q: "When is Mia's winter break?", a: "2026-12-21 to 2027-01-04. Classes start 2027-01-05.", page: "school/maple-grove-elementary.md", src: "school-letter-maple-grove.pdf" },
+    { q: "When was the roof last replaced?", a: "The wiki has no answer to this question.", none: true, note: "The Skill offers to search the source folders. That search also has no answer, and the Skill does not answer from general knowledge." },
+    { q: "What is the Wi-Fi password?", a: "The wiki does not store passwords.", none: true, note: "The whiteboard photo shows a Wi-Fi password. The Skill never copies passwords, PINs, or full card numbers into a page." }
+  ];
+  var state = { step: 0, confirmed: false, read: false, file: 0, approved: false, page: "dishwasher", q: 2, round2: false, decided: false };
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+
+  function tabs() {
+    $("tablist").innerHTML = STEPS.map(function (s, i) {
+      return '<li role="presentation"><button class="tab" role="tab" type="button" id="tab-' + s.id + '" data-step="' + i + '" aria-selected="' + (i === state.step) + '"><span class="n">' + (i + 1) + '</span><span class="label">' + s.label + '</span></button></li>';
+    }).join("");
+  }
+  function bubble(who, text) { return '<div class="bubble ' + (who === "You" ? "user" : "skill") + '"><span class="who">' + who + '</span>' + text + '</div>'; }
+  function md(lines) { return '<div class="md">' + lines.map(function (l) { return '<div' + (l[0] ? ' class="' + l[0] + '"' : '') + '>' + (l[1] || "&nbsp;") + '</div>'; }).join("") + '</div>'; }
+  function fact(text, src) { return ["", "- " + esc(text) + ' <span class="src">Source: ' + esc(src) + '</span>']; }
+
+  var VIEWS = {
+    "setup": function () {
+      var h = '<h2>Choose the folders the Skill can read</h2><div class="say">' +
+        bubble("You", "Set up the household wiki. Use Documents/Home, Photos/Home, and Voice Memos as sources.") +
+        bubble("Household Wiki", "Please confirm. Wiki folder: <span class=\"mono\">Household Wiki</span> in your personal folder. Source folders: <span class=\"mono\">Documents/Home</span>, <span class=\"mono\">Photos/Home</span>, <span class=\"mono\">Voice Memos</span>. Are there folders or file types to leave out?") + '</div>';
+      if (!state.confirmed) return h + '<div class="row"><button class="btn" type="button" data-act="confirm">Confirm the folders</button></div><p class="note">Nothing is created before you confirm. The source files stay read-only for the whole run.</p>';
+      return h + '<div class="say">' + bubble("You", "Confirmed.") + bubble("Household Wiki", "The wiki is set up. I created 10 subfolders, index.md, and log.md.") + '</div>' +
+        '<h3>Created in the wiki folder</h3><ul class="chips">' + ["people", "pets", "home", "appliances", "vehicles", "money", "health", "school", "contacts", "trips"].map(function (f) { return '<li class="chip">' + f + '/</li>'; }).join("") + '<li class="chip">index.md</li><li class="chip">log.md</li></ul>' +
+        '<p class="note">At Setup, index.md says "No pages yet." and log.md lists the three source folders and one Setup entry.</p>';
+    },
+    "ingest": function () {
+      var f = FILES[state.file];
+      var h = '<h2>The Skill finds 12 new files</h2><p>The sample household keeps receipts, letters, photos of labels, and one voice memo in three folders. Select a file to see what it holds.</p><div class="files">' +
+        FILES.map(function (x, i) { return '<button class="file ' + x.k + '" type="button" data-file="' + i + '" aria-pressed="' + (i === state.file) + '"><span class="name">' + esc(x.p.split("/").pop()) + '</span><span class="meta">' + esc(x.p.split("/").slice(0, -1).join("/")) + ' &middot; ' + x.t + (state.read ? ' &middot; ' + x.e : '') + '</span></button>'; }).join("") + '</div>' +
+        '<div class="detail"><span class="mono">' + esc(f.p) + '</span><dl><dt>Type</dt><dd>' + f.t + '</dd><dt>Read by</dt><dd>' + (state.read ? '<span class="mono">' + f.e + '</span>' : 'Not read yet') + '</dd><dt>Key facts</dt><dd>' + esc(f.f) + '</dd></dl></div>';
+      if (!state.read) return h + '<div class="row"><button class="btn" type="button" data-act="read">Read the new files</button></div>';
+      return h + '<p class="note">Three registered NAS experts read the files. <span class="mono">document-agent</span> extracts facts from the 6 PDFs with the receipt, invoice, contract, and medical-report schemas. <span class="mono">photo-agent</span> reads the text in the 5 photos. <span class="mono">knowledge-agent</span> transcribes the voice memo. <span class="mono">file-agent</span> finds the files and later writes the pages.</p>';
+    },
+    "change-set": function () {
+      var h = '<h2>Nothing changes until you approve</h2><p>The Skill shows every page it will create before it writes. A change set has at most 10 pages. Pages with dates in the next 60 days come first, and the rest wait for the next run.</p>' +
+        '<div class="scroll"><table><thead><tr><th>Page</th><th>New or changed</th><th>From</th><th>Conflicts</th></tr></thead><tbody>' +
+        CHANGES.map(function (c) { return '<tr><td class="path">' + c[0] + '</td><td><span class="pill new">New</span></td><td class="mono">' + c[1] + '</td><td>0</td></tr>'; }).join("") + '</tbody></table></div>' +
+        '<div class="detail"><dl><dt>No household facts</dt><dd><span class="mono">Photos/Home/beach-day-2026-07.jpg</span></dd><dt>For the next run</dt><dd class="mono">' + NEXT_RUN.join(", ") + '</dd></dl></div>' +
+        '<p class="note">The test plan expects these 13 pages over one or two runs. Which 10 pages land in the first run can differ on a real NAS; this split is an example.</p>';
+      if (!state.approved) return h + '<div class="say">' + bubble("Household Wiki", "Apply all, apply some, or cancel?") + '</div><div class="row"><button class="btn" type="button" data-act="approve">Apply all</button></div>';
+      return h + '<div class="say">' + bubble("You", "Apply all.") + bubble("Household Wiki", "Done. I created 10 pages, updated index.md, and added an Ingest entry with a Last ingest time to log.md. 3 pages are left for the next run. The source files did not change.") + '</div>';
+    },
+    "wiki-page": function () {
+      var dish = state.page === "dishwasher";
+      var r = "Documents/Home/dishwasher-receipt.pdf", c = "Documents/Home/car-insurance-renewal-2026.pdf";
+      var lines = dish ? [
+        ["h1", "# Dishwasher"], [], ["", "Type: appliance"], ["", "Last updated: 2026-11-25"],
+        ["h2", "## Facts"], fact("Model: Aster DW-450.", r + ", page 1"), fact("Serial number ends in 4417.", r + ", page 1"), fact("Bought 2024-03-02 for $849.00.", r + ", page 1"), fact("Service phone: 555-0111.", r + ", page 2"),
+        ["h2", "## Dates"], fact("2026-03-02: Warranty ends.", r + ", page 2"),
+        ["h2", "## Sources"], ["", "- " + r + " (added 2026-11-25)"]
+      ] : [
+        ["h1", "# Car insurance"], [], ["", "Type: policy"], ["", "Last updated: 2026-11-25"],
+        ["h2", "## Facts"], fact("Insurer: Harbor Lane Insurance.", c + ", page 1"), fact("Policy number ends in 2291.", c + ", page 1"), fact("Annual premium: $1,284.00.", c + ", page 1"), fact("Claims phone: 555-0130.", c + ", page 1"),
+        ["h2", "## Dates"], fact("2026-12-15: Renewal date.", c + ", page 1"),
+        ["h2", "## Related"], ["", "- [Tessera Wagon](../vehicles/tessera-wagon.md)"],
+        ["h2", "## Sources"], ["", "- " + c + " (added 2026-11-25)"]
+      ];
+      return '<h2>Each page is plain Markdown, and every fact has a source</h2><p>People and other Skills can read the wiki without this Skill. Each line in Facts and Dates ends with the source file, and with the page number for a PDF.</p>' +
+        '<div class="row"><button class="btn ' + (dish ? "" : "ghost") + '" type="button" data-page="dishwasher">appliances/dishwasher.md</button><button class="btn ' + (dish ? "ghost" : "") + '" type="button" data-page="insurance">money/car-insurance.md</button></div>' + md(lines) +
+        '<p class="note">' + (dish ? "The warranty end date cites page 2 of the receipt, where the warranty text is." : "The full policy number is in the source PDF. The page keeps only the last 4 characters.") + ' The page text is an illustration in the wiki format, built from the expected facts.</p>';
+    },
+    "ask": function () {
+      var x = QUESTIONS[state.q];
+      return '<h2>Ask a question, get the answer and its source</h2><p>These are the 10 questions in the test plan. Select one.</p><div class="qs">' +
+        QUESTIONS.map(function (y, i) { return '<button class="q" type="button" data-q="' + i + '" aria-pressed="' + (i === state.q) + '"><span class="n">' + (i + 1) + '</span><span>' + esc(y.q) + '</span></button>'; }).join("") + '</div>' +
+        '<div class="answer' + (x.none ? " none" : "") + '"><h3>Expected answer</h3><div class="big">' + esc(x.a) + '</div>' +
+        (x.none ? '' : '<div class="detail"><dl><dt>Wiki page</dt><dd class="mono">' + x.page + '</dd><dt>Source file</dt><dd class="mono">' + esc(x.src) + '</dd></dl></div>') +
+        (x.note ? '<p class="note">' + esc(x.note) + '</p>' : '') + '</div>';
+    },
+    "conflict": function () {
+      var h = '<h2>A new letter disagrees with the wiki</h2><p>Two more files arrive in <span class="mono">Documents/Home</span>: an insurance change notice with a different renewal date, and a credit card statement that holds a full card number and a PIN.</p>';
+      if (!state.round2) return h + '<ul class="chips"><li class="chip">car-insurance-change-notice.pdf</li><li class="chip">credit-card-statement-2026-11.pdf</li></ul><div class="say">' + bubble("You", "Update the household wiki.") + '</div><div class="row"><button class="btn" type="button" data-act="round2">Run the update</button></div>';
+      var c = "Documents/Home/car-insurance-renewal-2026.pdf", n = "Documents/Home/car-insurance-change-notice.pdf";
+      h += '<p class="note">The Skill reads log.md and finds only the 2 new files.</p><div class="scroll"><table><thead><tr><th>Page</th><th>New or changed</th><th>From</th><th>Conflicts</th></tr></thead><tbody>' +
+        '<tr><td class="path">money/car-insurance.md</td><td><span class="pill chg">Changed</span></td><td class="mono">car-insurance-change-notice.pdf</td><td><span class="pill conf">1: 2026-12-15 and 2027-01-15</span></td></tr>' +
+        '<tr><td class="path">the card page in money/</td><td><span class="pill new">New</span></td><td class="mono">credit-card-statement-2026-11.pdf</td><td>0</td></tr></tbody></table></div>';
+      var lines = [["h1", "# Car insurance"], ["h2", "## Dates"]];
+      if (!state.decided) {
+        lines.push(fact("2026-12-15: Renewal date.", c + ", page 1"));
+        lines.push(["h2", "## Open questions"]);
+        lines.push(["", '- <span class="hl">Two renewal dates found: 2026-12-15 (' + c + ') and 2027-01-15 (' + n + '). The user has not confirmed which one is correct.</span>']);
+      } else {
+        lines.push(fact("2027-01-15: Renewal date.", n + ", page 1"));
+        lines.push(["h2", "## Removed facts"]);
+        lines.push(["", '- <span class="gone">2026-11-25: Removed "2026-12-15: Renewal date". Reason: the user said that 2027-01-15 is correct.</span>']);
+      }
+      h += '<h3>money/car-insurance.md after the update</h3>' + md(lines);
+      h += state.decided ? '<p class="note">The old date moved to Removed facts with the date and the reason. No text was deleted.</p>'
+        : '<p>The page keeps 2026-12-15 and adds an open question with both values. The Skill never overwrites a fact.</p><div class="row"><button class="btn" type="button" data-act="decide">Say: "The new date 2027-01-15 is correct."</button></div>';
+      return h + '<div class="detail"><dl><dt>Card page</dt><dd>"Card number ends in 1111." Balance $412.37 due 2026-12-08.</dd><dt>Not copied</dt><dd>The full card number and the PIN are in no page. The Sources line says: "This source contains sensitive data that was not copied."</dd></dl></div>';
+    },
+    "tidy": function () {
+      var up = [["2026-11-30", "Field trip form due"], ["2026-12-03", "Picture day"]];
+      if (state.round2) up.push(["2026-12-08", "Card payment, $412.37"]);
+      if (!state.round2) up.push(["2026-12-15", "Car insurance renews"]);
+      else if (!state.decided) up.push(["2026-12-15", "Car insurance renews (or 2027-01-15, see Conflicts)"]);
+      up.push(["2026-12-17", "Winter concert"], ["2026-12-20", "Pepper's rabies vaccine due"], ["2026-12-21", "Winter break starts"]);
+      if (state.round2 && state.decided) up.push(["2027-01-15", "Car insurance renews"]);
+      var li = function (r) { return '<li><span class="d">' + r[0] + '</span><span>' + r[1] + '</span></li>'; };
+      return '<h2>What needs attention</h2><div class="say">' + bubble("You", "What needs attention in the household wiki?") + '</div><p class="note">Expected household check for a test day of 2026-11-25' + (state.round2 ? ", after the round 2 update" : ", before the round 2 files arrive") + '.</p>' +
+        '<h3>Coming up</h3><ul class="dates">' + up.map(li).join("") + '</ul>' +
+        '<h3>Past due</h3><ul class="dates due">' + li(["2026-11-18", "Internet bill, $65.00. Autopay is off and the wiki has no \"done\" note."]) + li(["2026-03-02", "Dishwasher warranty ended."]) + '</ul>' +
+        '<h3>Conflicts</h3><ul class="dates conf"><li>' + (state.round2 && !state.decided ? "Car insurance renewal date: 2026-12-15 or 2027-01-15. Go to the Conflict step to decide." : "None.") + '</li></ul>' +
+        '<h3>Old pages</h3><ul class="dates conf"><li>None.</li></ul><p class="note">Tidy only reports. The Skill makes no change without a confirmed change set.</p>';
+    }
+  };
+
+  function render(focus) {
+    tabs();
+    $("panel").innerHTML = VIEWS[STEPS[state.step].id]();
+    $("panel").setAttribute("aria-labelledby", "tab-" + STEPS[state.step].id);
+    $("back").disabled = state.step === 0;
+    $("next").disabled = state.step === STEPS.length - 1;
+    $("next").textContent = state.step === STEPS.length - 1 ? "End of the run" : "Next: " + STEPS[state.step + 1].label;
+    if (focus) { var t = $("tab-" + STEPS[state.step].id); if (t) t.focus({ preventScroll: true }); }
+  }
+  function go(i, focus) {
+    state.step = Math.max(0, Math.min(STEPS.length - 1, i));
+    try { history.replaceState(null, "", "#" + STEPS[state.step].id); } catch (e) { /* hash is a convenience */ }
+    render(focus);
+  }
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest("button"); if (!b) return;
+    if (b.dataset.step) return go(+b.dataset.step, true);
+    if (b.id === "back") return go(state.step - 1);
+    if (b.id === "next") return go(state.step + 1);
+    if (b.dataset.file) state.file = +b.dataset.file;
+    else if (b.dataset.q) state.q = +b.dataset.q;
+    else if (b.dataset.page) state.page = b.dataset.page;
+    else if (b.dataset.act === "confirm") state.confirmed = true;
+    else if (b.dataset.act === "read") state.read = true;
+    else if (b.dataset.act === "approve") state.approved = true;
+    else if (b.dataset.act === "round2") state.round2 = true;
+    else if (b.dataset.act === "decide") state.decided = true;
+    else return;
+    render();
+  });
+  function fromHash() { var id = location.hash.slice(1); for (var i = 0; i < STEPS.length; i++) if (STEPS[i].id === id) return i; return 0; }
+  window.addEventListener("hashchange", function () { state.step = fromHash(); render(); });
+  state.step = fromHash();
+  render();
+})();
+</script>

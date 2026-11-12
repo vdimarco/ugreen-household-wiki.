@@ -1,0 +1,58 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; }
+    #s2-ring { left: -500px; top: 300px; }
+    #s2-h { top: 190px; font-size: 72px; }
+    #s2-grid { position: absolute; inset: 0; }
+    #s2-q { left: 330px; top: 420px; font-size: 68px; padding: 34px 46px; }
+    #s2-nobody { position: absolute; left: 330px; top: 620px; font: 700 110px var(--font-display); color: var(--amber); letter-spacing: -0.02em; }
+  </style>
+  <div id="root" data-composition-id="s2" data-width="1920" data-height="1080">
+    <div id="s2-stage" class="hw-stage">
+      <div id="s2-ring" class="hw-ring" data-layout-ignore></div>
+      <div class="hw-kicker">The problem</div>
+      <h2 id="s2-h" class="hw-h"><span class="w">Your </span><span class="w">household </span><span class="w">facts </span><span class="w">hide </span><span class="w">in </span><span class="w">hundreds </span><span class="w">of </span><span class="w">files.</span></h2>
+      <div id="s2-grid">
+        <div id="s2-c1" class="hw-file s2-c" style="left: 96px; top: 380px"><b data-layout-allow-overlap>dishwasher-receipt.pdf</b><span data-layout-allow-overlap>Receipt, 2 pages</span></div>
+        <div id="s2-c2" class="hw-file s2-c" style="left: 676px; top: 380px"><b data-layout-allow-overlap>car-insurance-renewal-2026.pdf</b><span data-layout-allow-overlap>Policy renewal notice</span></div>
+        <div id="s2-c3" class="hw-file s2-c" style="left: 1256px; top: 380px"><b data-layout-allow-overlap>school-letter-maple-grove.pdf</b><span data-layout-allow-overlap>School letter</span></div>
+        <div id="s2-c4" class="hw-file s2-c photo" style="left: 96px; top: 512px"><b data-layout-allow-overlap>furnace-label.jpg</b><span data-layout-allow-overlap>Photo of a label</span></div>
+        <div id="s2-c5" class="hw-file s2-c" style="left: 676px; top: 512px"><b data-layout-allow-overlap>pediatric-visit-mia-2026-10.pdf</b><span data-layout-allow-overlap>Visit summary</span></div>
+        <div id="s2-c6" class="hw-file s2-c" style="left: 1256px; top: 512px"><b data-layout-allow-overlap>vet-record-pepper.pdf</b><span data-layout-allow-overlap>Vet record</span></div>
+        <div id="s2-c7" class="hw-file s2-c" style="left: 96px; top: 644px"><b data-layout-allow-overlap>internet-bill-2026-10.pdf</b><span data-layout-allow-overlap>Bill</span></div>
+        <div id="s2-c8" class="hw-file s2-c photo" style="left: 676px; top: 644px"><b data-layout-allow-overlap>water-heater-label.png</b><span data-layout-allow-overlap>Photo of a label</span></div>
+        <div id="s2-c9" class="hw-file s2-c photo" style="left: 1256px; top: 644px"><b data-layout-allow-overlap>fridge-whiteboard.jpg</b><span data-layout-allow-overlap>Photo of a whiteboard</span></div>
+        <div id="s2-c10" class="hw-file s2-c photo" style="left: 96px; top: 776px"><b data-layout-allow-overlap>medicine-label-mia.jpg</b><span data-layout-allow-overlap>Photo of a label</span></div>
+        <div id="s2-c11" class="hw-file s2-c photo" style="left: 676px; top: 776px"><b data-layout-allow-overlap>beach-day-2026-07.jpg</b><span data-layout-allow-overlap>Family photo</span></div>
+        <div id="s2-c12" class="hw-file s2-c audio" style="left: 1256px; top: 776px"><b data-layout-allow-overlap>plumber-visit-2026-11-02.m4a</b><span data-layout-allow-overlap>Voice memo, 29 s</span></div>
+      </div>
+      <div id="s2-q" class="hw-bubble user" data-layout-allow-overlap data-layout-allow-occlusion>When does the car insurance renew?</div>
+      <div id="s2-nobody" data-layout-allow-overlap data-layout-allow-occlusion>Nobody remembers.</div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      HW.spin(tl, "#s2-ring", 12.6);
+      HW.words(tl, "#s2-h", 0.7, 0.3);
+      const rot = [-2, 1.5, -1, 2, 1, -2, 1.5, -1.5, 1.5, -1, 2, -1.5];
+      gsap.utils.toArray(".s2-c").forEach(function (el, i) {
+        tl.fromTo(el, { opacity: 0, y: -520 - (i % 3) * 40, rotation: rot[i] * 3, filter: "blur(10px)" },
+          { opacity: 1, y: 0, rotation: rot[i], filter: "blur(0px)", duration: 0.7, ease: "expo.out" }, 0.9 + i * 0.2);
+      });
+      const pop = function (ids, t) {
+        tl.fromTo(ids, { scale: 1 }, { scale: 1.06, duration: 0.22, ease: "back.out(1.6)" }, t);
+        tl.fromTo(ids, { scale: 1.06 }, { scale: 1, duration: 0.3, ease: "power2.inOut", immediateRender: false }, t + 0.75);
+      };
+      pop("#s2-c1", 4.2);
+      pop("#s2-c2", 5.2);
+      pop("#s2-c3", 6.85);
+      pop("#s2-c4, #s2-c8, #s2-c10", 7.5);
+      tl.fromTo("#s2-grid, #s2-h", { opacity: 1, filter: "blur(0px)" }, { opacity: 0.22, filter: "blur(7px)", duration: 0.45, ease: "power2.inOut", immediateRender: false }, 8.5);
+      HW.inn(tl, "#s2-q", 8.65, { s: 0.86, d: 0.5, ease: "back.out(1.4)" });
+      tl.fromTo("#s2-nobody", { opacity: 0, x: -40, filter: "blur(12px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, 11.0);
+      HW.out(tl, "#s2-stage", 12.3, 0.28);
+      window.__timelines["s2"] = tl;
+    })();
+  </script>
+</template>

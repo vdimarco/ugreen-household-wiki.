@@ -1,0 +1,52 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; }
+    #s7-ring { right: -300px; top: 420px; }
+    #s7-a, #s7-b { position: absolute; inset: 0; }
+    #s7-q1 { left: 96px; top: 200px; font-size: 48px; }
+    #s7-ans { position: absolute; left: 96px; top: 372px; font: 700 190px/1 var(--font-display); color: var(--mint); letter-spacing: -0.03em; }
+    #s7-ans .w { display: inline-block; }
+    #s7-cost { position: absolute; left: 104px; top: 580px; font: 500 60px var(--font-body); color: var(--paper); }
+    .s7-ref { position: absolute; top: 730px; background: var(--paper); color: var(--ink); border-radius: 10px; padding: 20px 28px; box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35); }
+    .s7-ref small { display: block; font: 700 24px var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: #55655f; }
+    .s7-ref span { display: block; font: 500 32px var(--font-mono); margin-top: 6px; white-space: nowrap; }
+    #s7-q2 { left: 96px; top: 250px; font-size: 56px; }
+    #s7-a2 { left: 96px; top: 440px; font-size: 68px; padding: 32px 42px; }
+    #s7-rule { position: absolute; left: 100px; top: 680px; font: 500 34px var(--font-mono); color: var(--amber); }
+  </style>
+  <div id="root" data-composition-id="s7" data-width="1920" data-height="1080">
+    <div id="s7-stage" class="hw-stage">
+      <div id="s7-ring" class="hw-ring" data-layout-ignore></div>
+      <div class="hw-kicker">Ask</div>
+      <div id="s7-a">
+        <div id="s7-q1" class="hw-bubble user">When does the car insurance renew, and what does it cost?</div>
+        <div id="s7-ans"><span class="w">2026</span><span class="w">-12</span><span class="w">-15</span></div>
+        <div id="s7-cost">$1,284.00 per year</div>
+        <div id="s7-ref1" class="s7-ref" style="left: 96px"><small>Wiki page</small><span>money/car-insurance.md</span></div>
+        <div id="s7-ref2" class="s7-ref" style="left: 640px"><small>Source file</small><span>car-insurance-renewal-2026.pdf</span></div>
+      </div>
+      <div id="s7-b">
+        <div id="s7-q2" class="hw-bubble user">What is the Wi-Fi password?</div>
+        <div id="s7-a2" class="hw-bubble skill">The wiki does not store passwords.</div>
+        <div id="s7-rule">Passwords and PINs are never copied.</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      HW.spin(tl, "#s7-ring", 11.6, 44);
+      HW.inn(tl, "#s7-q1", 0.85, { s: 0.85, d: 0.45, ease: "back.out(1.4)" });
+      tl.fromTo("#s7-ans .w", { opacity: 0, y: 90, filter: "blur(16px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.5, ease: "expo.out", stagger: 0.1 }, 3.0);
+      HW.inn(tl, "#s7-cost", 3.5, { x: -40, d: 0.4 });
+      HW.inn(tl, "#s7-ref1", 4.55, { y: 60, d: 0.45, ease: "back.out(1.5)" });
+      HW.inn(tl, "#s7-ref2", 6.1, { y: 60, d: 0.45, ease: "back.out(1.5)" });
+      HW.out(tl, "#s7-a", 7.9, 0.25);
+      HW.inn(tl, "#s7-q2", 8.2, { s: 0.85, d: 0.4, ease: "back.out(1.4)" });
+      HW.inn(tl, "#s7-a2", 9.0, { x: -60, d: 0.5 });
+      HW.inn(tl, "#s7-rule", 9.4, { d: 0.4 });
+      HW.out(tl, "#s7-stage", 11.3, 0.28);
+      window.__timelines["s7"] = tl;
+    })();
+  </script>
+</template>

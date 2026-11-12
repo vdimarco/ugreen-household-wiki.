@@ -1,0 +1,45 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; }
+    #s8-ring { left: 380px; top: 520px; }
+    #s8-h { top: 190px; font-size: 68px; }
+    .s8-date { width: 820px; height: 250px; top: 330px; padding: 30px 38px; }
+    .s8-date small { display: block; font: 700 24px var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: #55655f; }
+    .s8-date b { display: block; font: 700 104px/1.1 var(--font-display); letter-spacing: -0.02em; }
+    .s8-date span { display: block; font: 500 26px var(--font-mono); color: #55655f; }
+    #s8-d2 b { color: #a3302a; }
+    #s8-open { position: absolute; left: 96px; top: 640px; width: 1728px; height: 170px; border: 3px solid var(--amber); border-radius: 12px; background: var(--ground-2); padding: 26px 36px; }
+    #s8-open b { display: block; font: 700 28px var(--font-mono); color: var(--amber); }
+    #s8-open span { display: block; font: 500 34px var(--font-body); color: var(--paper); margin-top: 12px; }
+    #s8-never { position: absolute; left: 96px; top: 856px; font: 700 76px var(--font-display); color: var(--paper); letter-spacing: -0.02em; }
+    #s8-never .w { display: inline-block; white-space: pre; }
+    #s8-never .w.k { color: var(--mint); }
+  </style>
+  <div id="root" data-composition-id="s8" data-width="1920" data-height="1080">
+    <div id="s8-stage" class="hw-stage">
+      <div id="s8-ring" class="hw-ring" data-layout-ignore></div>
+      <div class="hw-kicker">Conflict</div>
+      <h2 id="s8-h" class="hw-h"><span class="w">A </span><span class="w">new </span><span class="w">letter </span><span class="w">says </span><span class="w">something </span><span class="w">different.</span></h2>
+      <div id="s8-d1" class="hw-card s8-date" style="left: 96px"><small>On the wiki page</small><b>2026-12-15</b><span>car-insurance-renewal-2026.pdf</span></div>
+      <div id="s8-d2" class="hw-card s8-date" style="left: 1004px"><small>In the new letter</small><b>2027-01-15</b><span>car-insurance-change-notice.pdf</span></div>
+      <div id="s8-open"><b>## Open questions</b><span>Two renewal dates found: 2026-12-15 and 2027-01-15. Which one is correct?</span></div>
+      <div id="s8-never"><span class="w">It </span><span class="w k">never </span><span class="w k">overwrites </span><span class="w">a </span><span class="w">fact.</span></div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      HW.spin(tl, "#s8-ring", 9.7, -38);
+      HW.words(tl, "#s8-h", 0.87, 0.2);
+      tl.fromTo("#s8-d1", { opacity: 0, y: 80, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, 0.5);
+      tl.fromTo("#s8-d2", { opacity: 0, x: 900, rotation: 8, filter: "blur(16px)" }, { opacity: 1, x: 0, rotation: 0, filter: "blur(0px)", duration: 0.55, ease: "power4.out" }, 1.7);
+      tl.fromTo("#s8-d1", { x: 0, rotation: 0 }, { x: -22, rotation: -2, duration: 0.12, ease: "power2.out", immediateRender: false }, 2.1);
+      tl.fromTo("#s8-d1", { x: -22, rotation: -2 }, { x: 0, rotation: 0, duration: 0.5, ease: "elastic.out(1, 0.5)", immediateRender: false }, 2.22);
+      tl.fromTo("#s8-open", { opacity: 0, y: 70, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.55, ease: "expo.out" }, 3.5);
+      tl.fromTo("#s8-d1, #s8-d2", { boxShadow: "0 18px 50px rgba(0,0,0,0.35), 0 0 0 0px #f0b860" }, { boxShadow: "0 18px 50px rgba(0,0,0,0.35), 0 0 0 6px #f0b860", duration: 0.35, ease: "power2.out", stagger: 0.25 }, 3.9);
+      HW.words(tl, "#s8-never", 7.03, 0.22);
+      HW.out(tl, "#s8-stage", 9.4, 0.28);
+      window.__timelines["s8"] = tl;
+    })();
+  </script>
+</template>

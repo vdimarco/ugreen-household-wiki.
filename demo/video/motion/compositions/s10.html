@@ -1,0 +1,41 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; }
+    #s10-ring { right: -380px; top: -20px; }
+    #s10-title { top: 300px; font-size: 160px; letter-spacing: -0.035em; }
+    #s10-title .w:last-child { color: var(--mint); }
+    #s10-sub { position: absolute; left: 100px; top: 510px; font: 500 62px var(--font-body); color: var(--muted); }
+    .s10-k { position: absolute; top: 670px; font: 700 78px var(--font-display); color: var(--paper); letter-spacing: -0.02em; white-space: nowrap; }
+    .s10-u { position: absolute; top: 772px; height: 8px; background: var(--mint); border-radius: 4px; }
+    #s10-end { position: absolute; left: 100px; top: 880px; font: 500 28px var(--font-mono); color: var(--amber); }
+  </style>
+  <div id="root" data-composition-id="s10" data-width="1920" data-height="1080">
+    <div id="s10-stage" class="hw-stage">
+      <div id="s10-ring" class="hw-ring" data-layout-ignore></div>
+      <h2 id="s10-title" class="hw-h"><span class="w">Household </span><span class="w">Wiki</span></h2>
+      <div id="s10-sub">Your home's knowledge,</div>
+      <div id="s10-k1" class="s10-k" style="left: 96px">kept private,</div>
+      <div id="s10-u1" class="s10-u" style="left: 96px; width: 440px"></div>
+      <div id="s10-k2" class="s10-k" style="left: 600px">kept current,</div>
+      <div id="s10-u2" class="s10-u" style="left: 600px; width: 450px"></div>
+      <div id="s10-k3" class="s10-k" style="left: 1114px">with a source.</div>
+      <div id="s10-u3" class="s10-u" style="left: 1114px; width: 500px"></div>
+      <div id="s10-end">Concept preview. Fictional sample data. Not recorded on a UGREEN AI NAS.</div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      HW.spin(tl, "#s10-ring", 10.5, 42);
+      tl.fromTo("#s10-title .w", { opacity: 0, y: 60, filter: "blur(14px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.6, ease: "expo.out", stagger: 0.18 }, 0.7);
+      HW.inn(tl, "#s10-sub", 2.35, { blur: 8, d: 0.3 });
+      const key = function (n, t) {
+        tl.fromTo("#s10-k" + n, { opacity: 0, y: 50, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, t);
+        tl.fromTo("#s10-u" + n, { scaleX: 0, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 0.45, ease: "power2.inOut" }, t + 0.2);
+      };
+      key(1, 4.2); key(2, 5.5); key(3, 6.95);
+      HW.inn(tl, "#s10-end", 7.4, { d: 0.5 });
+      window.__timelines["s10"] = tl;
+    })();
+  </script>
+</template>

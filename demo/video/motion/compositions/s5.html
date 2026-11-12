@@ -1,0 +1,59 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; }
+    #s5-ring { right: -560px; top: -260px; }
+    #s5-h { top: 190px; font-size: 72px; }
+    #s5-h .w.s5-key { color: var(--amber); }
+    #s5-table { left: 96px; top: 330px; width: 1130px; height: 610px; padding: 22px 34px; }
+    .s5-head, .s5-row { display: grid; grid-template-columns: 1fr 290px 170px; align-items: center; height: 68px; border-bottom: 2px solid #cfd9d4; }
+    .s5-head { height: 50px; white-space: nowrap; font: 700 24px var(--font-body); letter-spacing: 0.04em; text-transform: uppercase; color: #55655f; }
+    .s5-row { font: 500 28px var(--font-mono); }
+    .s5-pill { justify-self: start; font: 700 24px var(--font-body); background: #d9ece6; color: #17695a; border-radius: 99px; padding: 5px 16px; }
+    #s5-rest { font: 500 28px var(--font-body); color: #55655f; padding-top: 16px; }
+    .s5-side { position: absolute; left: 1286px; width: 538px; background: var(--ground-2); border: 2px solid var(--line); border-radius: 10px; padding: 18px 24px; }
+    .s5-side small { display: block; font: 700 24px var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .s5-side span { display: block; font: 500 28px var(--font-mono); color: var(--paper); margin-top: 4px; }
+    #s5-btn, #s5-done { position: absolute; left: 1286px; top: 800px; width: 538px; height: 110px; border-radius: 12px; display: flex; align-items: center; justify-content: center; text-align: center; font: 700 44px var(--font-display); }
+    #s5-btn { background: var(--mint); color: #06231c; }
+    #s5-done { background: var(--paper); color: #17695a; font-size: 34px; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="s5" data-width="1920" data-height="1080">
+    <div id="s5-stage" class="hw-stage">
+      <div id="s5-ring" class="hw-ring" data-layout-ignore></div>
+      <div class="hw-kicker">Change set</div>
+      <h2 id="s5-h" class="hw-h"><span class="w">Nothing </span><span class="w">changes </span><span class="w">until </span><span class="w s5-key">you </span><span class="w s5-key">approve.</span></h2>
+      <div id="s5-table" class="hw-card">
+        <div class="s5-head"><span>Page</span><span>New or changed</span><span>Conflicts</span></div>
+        <div class="s5-row"><span>school/maple-grove-elementary.md</span><span class="s5-pill">New</span><span>0</span></div>
+        <div class="s5-row"><span>money/car-insurance.md</span><span class="s5-pill">New</span><span>0</span></div>
+        <div class="s5-row"><span>pets/pepper.md</span><span class="s5-pill">New</span><span>0</span></div>
+        <div class="s5-row"><span>health/mia.md</span><span class="s5-pill">New</span><span>0</span></div>
+        <div class="s5-row"><span>appliances/dishwasher.md</span><span class="s5-pill">New</span><span>0</span></div>
+        <div class="s5-row"><span>home/furnace.md</span><span class="s5-pill">New</span><span>0</span></div>
+        <div class="s5-row"><span>home/water-heater.md</span><span class="s5-pill">New</span><span>0</span></div>
+        <div id="s5-rest">and 3 more pages. At most 10 pages in one change set.</div>
+      </div>
+      <div id="s5-side1" class="s5-side" style="top: 330px"><small>No household facts</small><span>beach-day-2026-07.jpg</span></div>
+      <div id="s5-side2" class="s5-side" style="top: 462px"><small>For the next run</small><span>3 contact pages</span></div>
+      <div id="s5-side3" class="s5-side" style="top: 594px"><small>Source files</small><span>never changed</span></div>
+      <div id="s5-btn">Apply all</div>
+      <div id="s5-done">Approved. 10 pages written.</div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      HW.spin(tl, "#s5-ring", 9.1, 36);
+      HW.words(tl, "#s5-h", 0.66, 0.24);
+      tl.fromTo("#s5-table", { opacity: 0, y: 120, filter: "blur(14px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.6, ease: "expo.out" }, 2.6);
+      tl.fromTo("#s5-table .s5-row, #s5-rest", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out", stagger: 0.14 }, 3.5);
+      tl.fromTo(".s5-side", { opacity: 0, x: 80, filter: "blur(8px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.45, ease: "expo.out", stagger: 0.25 }, 5.2);
+      HW.inn(tl, "#s5-btn", 6.5, { y: 40, d: 0.4, ease: "back.out(1.6)" });
+      tl.fromTo("#s5-btn", { scale: 1 }, { scale: 0.93, duration: 0.1, ease: "power2.in", immediateRender: false }, 7.3);
+      tl.fromTo("#s5-btn", { opacity: 1 }, { opacity: 0, duration: 0.12, immediateRender: false }, 7.4);
+      tl.fromTo("#s5-done", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.8)" }, 7.4);
+      HW.out(tl, "#s5-stage", 8.8, 0.28);
+      window.__timelines["s5"] = tl;
+    })();
+  </script>
+</template>
