@@ -9,6 +9,7 @@ Copy each field into the Devpost project form. Round 1 closes Sunday, Nov 15, 20
 | Project Proposal (PDF) | `proposal/household-wiki-proposal.pdf` | 36 KB, 2 pages, about 475 words | 1 MB, 500 words |
 | Pre-test Skill Package (ZIP) | `dist/household-wiki.zip` | 10 KB, 4 files | 10 MB, 100 files, 1 MB per file |
 | Cover image (gallery) | `media/cover.png` | 3:2 | none |
+| Video demo link (optional) | `demo/video/household-wiki-concept.mp4` | 110 s, 14 MB, 1080p | YouTube, Vimeo, or Youku link only |
 
 ## Project name
 
@@ -77,9 +78,33 @@ ugos, ugreen-ai-nas, uliya-skill-kit, markdown, claude
 
 - https://github.com/vdimarco/ugreen-household-wiki.
 
+## Video demo link
+
+Round 1 does not require a video. This concept preview is optional. It explains the idea with fictional sample files and the expected results. It is not a recording on a UGREEN NAS, and every frame says so. Round 2 needs a new video recorded on your assigned NAS (see `demo/video/README.md`).
+
+Devpost does not accept a video file. Upload the video first, then paste the link:
+
+1. Upload `demo/video/household-wiki-concept.mp4` to YouTube. Set it to Public or Unlisted.
+2. Use the title and description below.
+3. Paste the YouTube link into the Devpost field "Video demo link".
+
+**YouTube title**
+
+Household Wiki: concept preview (UGREEN Hackathon 2026 on AI NAS)
+
+**YouTube description**
+
+Household Wiki is a UGOS Skill that turns a family's documents, photos, and voice memos on a UGREEN AI NAS into a private, linked Markdown wiki. It answers household questions with sources and shows the dates that are coming up.
+
+This video is a concept preview. All files and people are fictional. The change set, pages, answers, and household check on screen are the expected results for the demo files. It is not a recording of the Skill on a UGREEN NAS. The final demo will be recorded on a UGREEN AI NAS in Round 2.
+
+Code and demo files: https://github.com/vdimarco/ugreen-household-wiki.
+Entry for the UGREEN Hackathon 2026 on AI NAS, track Open Innovation.
+
 ## Before you submit
 
 - [ ] Check the entrant name in the proposal PDF ("Vaughn DiMarco"). Add teammates and their consent if you have any.
 - [ ] Confirm on the Devpost Rules tab that a team can enter more than one Skill, if you also submit Shot List Coverage.
 - [ ] Upload the PDF and the ZIP above.
+- [ ] Optional: upload the concept video to YouTube and paste the link into "Video demo link".
 - [ ] Do not add a video or a repo as required items. Round 1 does not need them.
