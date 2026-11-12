@@ -39,7 +39,14 @@
       tl.fromTo("#s8-d1, #s8-d2", { boxShadow: "0 18px 50px rgba(0,0,0,0.35), 0 0 0 0px #f0b860" }, { boxShadow: "0 18px 50px rgba(0,0,0,0.35), 0 0 0 6px #f0b860", duration: 0.35, ease: "power2.out", stagger: 0.25 }, 3.9);
       HW.words(tl, "#s8-never", 7.03, 0.22);
       HW.out(tl, "#s8-stage", 9.4, 0.28);
-      window.__timelines["s8"] = tl;
+      // retime:begin (written by retime.py: old cue time -> new narration time)
+      const W = [[0, 0], [0.87, 0.4], [3.33, 2.55], [7.03, 5.34], [9.16, 7.09], [9.7, 7.6]];
+      const warped = gsap.timeline({ paused: true });
+      for (let k = 0; k + 1 < W.length; k++) {
+        warped.fromTo(tl, { time: W[k][0] }, { time: W[k + 1][0], duration: W[k + 1][1] - W[k][1], ease: "none", immediateRender: false }, W[k][1]);
+      }
+      // retime:end
+      window.__timelines["s8"] = warped;
     })();
   </script>
 </template>

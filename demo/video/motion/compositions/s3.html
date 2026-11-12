@@ -56,7 +56,14 @@
       };
       hit("#s3-t1", 6.8); hit("#s3-t2", 7.55); hit("#s3-t3", 8.1); hit("#s3-t4", 8.7); hit("#s3-t5", 9.5);
       HW.out(tl, "#s3-stage", 10.4, 0.28);
-      window.__timelines["s3"] = tl;
+      // retime:begin (written by retime.py: old cue time -> new narration time)
+      const W = [[0, 0], [0.91, 0.4], [3.34, 2.94], [6.81, 6.15], [7.52, 6.69], [10.22, 8.87], [10.7, 9.3]];
+      const warped = gsap.timeline({ paused: true });
+      for (let k = 0; k + 1 < W.length; k++) {
+        warped.fromTo(tl, { time: W[k][0] }, { time: W[k + 1][0], duration: W[k + 1][1] - W[k][1], ease: "none", immediateRender: false }, W[k][1]);
+      }
+      // retime:end
+      window.__timelines["s3"] = warped;
     })();
   </script>
 </template>

@@ -46,7 +46,14 @@
       HW.inn(tl, "#s7-a2", 9.0, { x: -60, d: 0.5 });
       HW.inn(tl, "#s7-rule", 9.4, { d: 0.4 });
       HW.out(tl, "#s7-stage", 11.3, 0.28);
-      window.__timelines["s7"] = tl;
+      // retime:begin (written by retime.py: old cue time -> new narration time)
+      const W = [[0, 0], [0.84, 0.4], [3.1, 1.87], [4.54, 2.94], [8.4, 5.28], [11.08, 7.48], [11.6, 8.0]];
+      const warped = gsap.timeline({ paused: true });
+      for (let k = 0; k + 1 < W.length; k++) {
+        warped.fromTo(tl, { time: W[k][0] }, { time: W[k + 1][0], duration: W[k + 1][1] - W[k][1], ease: "none", immediateRender: false }, W[k][1]);
+      }
+      // retime:end
+      window.__timelines["s7"] = warped;
     })();
   </script>
 </template>

@@ -33,7 +33,14 @@
       tl.fromTo(".s1-f", { y: 0 }, { y: -40, duration: 5, ease: "none", stagger: 0.1 }, 2.4);
       HW.inn(tl, "#s1-note", 6.4, { x: -30, d: 0.5 });
       HW.out(tl, "#s1-stage", 9.3, 0.28);
-      window.__timelines["s1"] = tl;
+      // retime:begin (written by retime.py: old cue time -> new narration time)
+      const W = [[0, 0], [0.76, 0.4], [2.27, 1.84], [4.4, 3.63], [6.15, 5.53], [8.83, 7.95], [9.6, 8.7]];
+      const warped = gsap.timeline({ paused: true });
+      for (let k = 0; k + 1 < W.length; k++) {
+        warped.fromTo(tl, { time: W[k][0] }, { time: W[k + 1][0], duration: W[k + 1][1] - W[k][1], ease: "none", immediateRender: false }, W[k][1]);
+      }
+      // retime:end
+      window.__timelines["s1"] = warped;
     })();
   </script>
 </template>

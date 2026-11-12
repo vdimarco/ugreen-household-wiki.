@@ -41,7 +41,14 @@
       HW.inn(tl, "#s9-c2", 4.4, { d: 0.25 });
       tl.fromTo(".s9-due", { opacity: 0, x: 140, filter: "blur(10px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.45, ease: "expo.out", stagger: 0.25 }, 4.5);
       HW.out(tl, "#s9-stage", 6.7, 0.28);
-      window.__timelines["s9"] = tl;
+      // retime:begin (written by retime.py: old cue time -> new narration time)
+      const W = [[0, 0], [0.68, 0.4], [2.31, 2.03], [6.04, 5.31], [7.0, 6.3]];
+      const warped = gsap.timeline({ paused: true });
+      for (let k = 0; k + 1 < W.length; k++) {
+        warped.fromTo(tl, { time: W[k][0] }, { time: W[k + 1][0], duration: W[k + 1][1] - W[k][1], ease: "none", immediateRender: false }, W[k][1]);
+      }
+      // retime:end
+      window.__timelines["s9"] = warped;
     })();
   </script>
 </template>

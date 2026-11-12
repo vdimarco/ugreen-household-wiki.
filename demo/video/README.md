@@ -41,9 +41,11 @@ Needs Python with Pillow, `ffmpeg`, and `pdftoppm`.
 
 ## Motion-graphics version (`household-wiki-motion.mp4`)
 
-`household-wiki-motion.mp4`: 1920 x 1080, 30 fps, 103 seconds. It uses the same 10 narration files and the same facts as the concept preview, with animated scenes built in HyperFrames (HTML and GSAP rendered to video). It has no music.
+`household-wiki-motion.mp4`: 1920 x 1080, 30 fps, 86 seconds. It shows the same facts as the concept preview, with animated scenes built in HyperFrames (HTML and GSAP rendered to video). It has no music.
 
-**It is also a concept preview, not a recording of the Skill on a UGREEN AI NAS.** A label at the top of every frame says: "Concept preview. Fictional sample data. Expected results shown. Not a recording on a UGREEN AI NAS."
+The narration is in `narration-natural/` (Higgsfield, Eleven v4, preset voice "Benji"). The text is the same as in the table above, except scene 1, which ends with "Meet our sample household, the Riveras." `motion/retime.py` fits the scene timing to these clips.
+
+**It is not a recording of the Skill on a UGREEN AI NAS.** A label at the top of every frame says: "Fictional sample data. Expected results shown. Not a recording on a UGREEN AI NAS."
 
 The project is in `motion/`: `index.html` holds the scene order, the label, and the narration; `compositions/s1.html` to `s10.html` hold one scene each.
 

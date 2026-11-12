@@ -52,7 +52,14 @@
       HW.inn(tl, "#s2-q", 8.65, { s: 0.86, d: 0.5, ease: "back.out(1.4)" });
       tl.fromTo("#s2-nobody", { opacity: 0, x: -40, filter: "blur(12px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, 11.0);
       HW.out(tl, "#s2-stage", 12.3, 0.28);
-      window.__timelines["s2"] = tl;
+      // retime:begin (written by retime.py: old cue time -> new narration time)
+      const W = [[0, 0], [0.68, 0.4], [4.2, 3.61], [8.65, 7.8], [10.98, 9.59], [12.14, 10.68], [12.6, 11.1]];
+      const warped = gsap.timeline({ paused: true });
+      for (let k = 0; k + 1 < W.length; k++) {
+        warped.fromTo(tl, { time: W[k][0] }, { time: W[k + 1][0], duration: W[k + 1][1] - W[k][1], ease: "none", immediateRender: false }, W[k][1]);
+      }
+      // retime:end
+      window.__timelines["s2"] = warped;
     })();
   </script>
 </template>

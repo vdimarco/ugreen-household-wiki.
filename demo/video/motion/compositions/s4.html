@@ -61,7 +61,14 @@
       lane(3, 10.2, "#s4-k4", 11.0);
       tl.fromTo(".s4-k", { borderColor: "#2c3a35", color: "#f3f6f4" }, { borderColor: "#58c2a8", color: "#58c2a8", duration: 0.35, ease: "power2.inOut", stagger: 0.1, immediateRender: false }, 11.7);
       HW.out(tl, "#s4-stage", 13.4, 0.28);
-      window.__timelines["s4"] = tl;
+      // retime:begin (written by retime.py: old cue time -> new narration time)
+      const W = [[0, 0], [0.88, 0.4], [3.35, 2.53], [5.88, 4.58], [12.96, 9.91], [13.7, 10.6]];
+      const warped = gsap.timeline({ paused: true });
+      for (let k = 0; k + 1 < W.length; k++) {
+        warped.fromTo(tl, { time: W[k][0] }, { time: W[k + 1][0], duration: W[k + 1][1] - W[k][1], ease: "none", immediateRender: false }, W[k][1]);
+      }
+      // retime:end
+      window.__timelines["s4"] = warped;
     })();
   </script>
 </template>
