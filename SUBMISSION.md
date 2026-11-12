@@ -39,7 +39,7 @@ Household Wiki applies the LLM Wiki pattern on the UGREEN AI NAS. The source fil
 
 ### How we built it
 
-The Skill is one SKILL.md with two reference files, built with the UGREEN Skill Developer Package (uliya-skill-kit 0.7.3). It delegates self-contained tasks to four registered NAS experts:
+The Skill is one SKILL.md with three reference files, built with the UGREEN Skill Developer Package (uliya-skill-kit 0.7.3). It delegates self-contained tasks to four registered NAS experts:
 
 - `file-agent`: finds new files, and reads and writes the wiki pages, the index, and the log.
 - `document-agent`: extracts facts with the receipt, invoice, contract, and medical-report schemas, and compares pages for conflicts.
