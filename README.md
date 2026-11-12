@@ -14,6 +14,7 @@ Household Wiki is a UGOS Skill. It turns a family's documents, photos, and voice
 | `demo/generate.py` | Makes the fictional demo data set |
 | `demo/data/` | The demo data: 12 files for round 1 and 2 edge-case files for round 2 |
 | `demo/test-plan.md` | Test cases, expected results, and the demo video plan |
+| `demo/video/` | A 110-second concept preview video with narration (clearly labeled, not recorded on a NAS), its builder, and the plan for the Round 2 recording |
 
 ## Modes
 
